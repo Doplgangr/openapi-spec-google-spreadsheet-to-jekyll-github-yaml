@@ -40,7 +40,7 @@ title: Pull Spreadsheet
     $(document).ready( function() {
       Tabletop.init( { key: key,
                        callback: showInfo,
-                       wanted: [ "overview","paths","definitions","properties"],
+                       wanted: [ "overview","paths","responses","definitions","properties"],
                        debug: true } )
     })
 
@@ -90,7 +90,33 @@ title: Pull Spreadsheet
              $d['description'] = $description;
              $d['parameters'] = $parameters;
              $d['operationId'] = $operationId;
-             $d['responses'] = $responses;
+
+             $d['responses'] = new Array();
+             $.each( tabletop.sheets("responses").all(), function(i, response) {
+
+                $path = response['path'];
+                $response_name = response['name'];
+                $response_description = response['description'];
+                $response_definition = response['definition'];
+
+                console.log($name + " == " + $path);
+                if($name == $path)
+                  {
+                  $s = {};
+                  $s['type'] = "array";
+                  $s['$ref'] = "#/definitions/" + $response_definition;
+
+                  $rd = {};
+                  $rd['description'] = $response_description;
+                  $rd['schema'] = $s;
+
+                  $r = {};
+                  $r[$response_name] = $rd;
+
+                  $d['responses'].push($r);
+                  }
+                })
+
 
              $v = {};
              $v[$verb] = $d;
@@ -111,7 +137,7 @@ title: Pull Spreadsheet
 
               $d = {};
               $d['name'] = $definition_name;
-              $d['type'] = $definition_type;
+              //$d['type'] = $definition_type;
               $d['properties'] = new Array();
               $.each( tabletop.sheets("properties").all(), function(i, path) {
 
