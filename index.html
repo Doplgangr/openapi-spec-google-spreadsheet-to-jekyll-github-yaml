@@ -63,16 +63,15 @@ title: Pull Spreadsheet
           $apidef['swagger'] = $swagger;
 
           $i = {};
-          $i['title'] = $id;
-          $i['description'] = $title;
-          $i['termsOfService'] = $description;
-          $i['version'] = $price;
+          $i['title'] = $info_title;
+          $i['description'] = $info_description;
+          $i['termsOfService'] = $info_termsOfService;
+          $i['version'] = $version;
 
           $apidef['info'] = $i;
 
           $apidef['host'] = $host;
           $apidef['basePath'] = $basePath;
-
           $apidef['version'] = $version;
 
           $apidef['paths'] = new Array();
