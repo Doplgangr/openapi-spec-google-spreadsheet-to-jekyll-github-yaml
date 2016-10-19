@@ -105,30 +105,30 @@ title: Pull Spreadsheet
            $apidef['definitions'] = new Array();
            $.each( tabletop.sheets("definitions").all(), function(i, path) {
 
-              $name = path['name'];
-              $type = path['type'];
-              $properties = path['properties'];
+              $definition_name = path['name'];
+              $definition_type = path['type'];
+              $definition_properties = path['properties'];
 
               $d = {};
-              $d['name'] = $name;
-              $d['type'] = $type;
+              $d['name'] = $definition_name;
+              $d['type'] = $definition_type;
               $d['properties'] = new Array();
               $.each( tabletop.sheets("properties").all(), function(i, path) {
 
                  $object = path['object'];
-                 $name = path['name'];
-                 $type = path['type'];
-                 $format = path['format'];
-                 $description = path['description'];
+                 $property_name = path['name'];
+                 $property_type = path['type'];
+                 $property_format = path['format'];
+                 $property_description = path['description'];
 
-                console.log($name + " == " + $object);
-                 if($name == $object)
+                 console.log($definition_name + " == " + $object);
+                 if($definition_name == $object)
                    {
                    $p = {};
-                   $p['name'] = $name;
-                   $p['type'] = $type;
-                   $p['format'] = $format;
-                   $p['description'] = $description;
+                   $p['name'] = $property_name;
+                   $p['type'] = $property_type;
+                   $p['format'] = $property_format;
+                   $p['description'] = $property_description;
                    $d['properties'].push($p);
                    }
                  })
