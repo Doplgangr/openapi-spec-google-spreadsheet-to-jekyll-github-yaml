@@ -40,73 +40,48 @@ title: Pull Spreadsheet
     $(document).ready( function() {
       Tabletop.init( { key: key,
                        callback: showInfo,
-                       wanted: [ "Products" ],
+                       wanted: [ "overview" ],
                        debug: true } )
     })
 
     function showInfo(data, tabletop) {
 
-      $products = new Array();
+      $apidef = new Array();
 
-      $("#table_info").text("We found the tables " + tabletop.model_names.join(", "));
+      $.each( tabletop.sheets("overview").all(), function(i, service) {
 
-      $.each( tabletop.sheets(), function(i, sheet) {
-        $("#table_info").append("<p>" + sheet.name + " has " + sheet.column_names.join(", ") + "</p>");
-      });
+          $swagger = service['swagger'];
+          $info_title = service['info_title'];
+          $info_description = service['info_description'];
+          $info_termsOfService = service['info_termsOfService'];
+          $host = service['host'];
+          $basePath = service['basePath'];
+          $schemes = service['schemes'];
+          $produces = service['produces'];
+          $version = service['version'];
 
-      $product = tabletop.sheets("Products").all();
+          $apidef['swagger'] = $swagger;
 
-      $count = 0;
-      $total_count = $product.length;
-      $.each( tabletop.sheets("Products").all(), function(i, service) {
+          $i = {};
+          $i['title'] = $id;
+          $i['description'] = $title;
+          $i['termsOfService'] = $description;
+          $i['version'] = $price;
 
-          $id = service['ID'];
-          $title = service['Title'];
-          $description = service['Description'];
-          $price = service['Price'];
+          $apidef['info'] = $i;
 
-          $p = {};
-          $p['id'] = $id;
-          $p['title'] = $title;
-          $p['description'] = $description;
-          $p['price'] = $price;
-          $products.push($p);
-          //beautify(jsonStr);
+          $apidef['host'] = $host;
+          $apidef['basePath'] = $basePath;
 
-          $count++;
-          if($count==$total_count)
-            {
-            $products_json = JSON.stringify($products);
-            $products_json = JSON.stringify(JSON.parse($products_json),null,2);
+          $apidef['version'] = $version;
 
-            $yaml_dump = jsyaml.dump($products);
+          $spec_json = JSON.stringify($apidef);
+          $spec_json = JSON.stringify(JSON.parse($spec_json),null,2);
 
-            document.getElementById('source').value = $yaml_dump;
+          $spec_yaml = jsyaml.dump($apidef);
 
-            // Grab the token from cookie
-            $oAuthToken = Cookies.get('token');
+          document.getElementById('source').value = $spec_yaml;
 
-            var github = new Github({token: $oAuthToken,auth: "oauth"});
-            var repo = github.getRepo($org,$repo);
-
-            repo.getTree('gh-pages?recursive=true', function(err, tree) {
-
-              $.each(tree, function(treeKey, treeValue) {
-
-                $writepath = '_data/store.yaml';
-                $path = treeValue['path'];
-                $sha = treeValue['sha'];
-                //console.log($path + ' == ' + $writepath);
-                if($path==$writepath)
-                  {
-                  repo.writemanual('gh-pages',$writepath, $yaml_dump, 'Save', $sha, function(err) { });
-                  //console.log("writing " + $writepath);
-                  //alert("saved " + $writepath);
-                  }
-                });
-              });
-
-            }
       })
 
     }
