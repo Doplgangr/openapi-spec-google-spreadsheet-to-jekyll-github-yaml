@@ -112,7 +112,7 @@ title: Pull Spreadsheet
           $spec_json = JSON.stringify($apidef);
           //$spec_json = JSON.stringify(JSON.parse($spec_json),null,2);
           console.log($spec_json);
-          $spec_yaml = jsyaml.dump($apidef);
+          //$spec_yaml = jsyaml.dump($apidef);
 
           document.getElementById('source').value = $spec_json;
 
