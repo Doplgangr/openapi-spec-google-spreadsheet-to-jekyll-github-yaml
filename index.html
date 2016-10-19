@@ -105,7 +105,7 @@ title: Pull Spreadsheet
                 $parameter_allowEmptyValue = response['allowEmptyValue'];
                 $parameter_default = response['default'];
 
-                console.log($parameter_path + " == " + $name);
+                //console.log($parameter_path + " == " + $name);
                 if($parameter_path == $name && $parameters.includes($parameter_name))
                   {
                   $p = {};
@@ -129,7 +129,7 @@ title: Pull Spreadsheet
                 $response_description = response['description'];
                 $response_definition = response['definition'];
 
-                console.log($name + " == " + $response_path);
+                //console.log($name + " == " + $response_path);
                 if($name == $response_path && $responses.includes($response_name))
                   {
                   $s = {};
@@ -176,7 +176,7 @@ title: Pull Spreadsheet
                  $property_format = path['format'];
                  $property_description = path['description'];
 
-                 console.log($definition_name + " == " + $object);
+                 //console.log($definition_name + " == " + $object);
                  if($definition_name == $object)
                    {
                    $p = {};
