@@ -70,44 +70,6 @@ title: Pull Spreadsheet
           $i['termsOfService'] = $info_termsOfService;
           $i['version'] = $version;
 
-          //$apidef['info'] = $i;
-
-          //$apidef['host'] = $host;
-          //$apidef['basePath'] = $basePath;
-          //$apidef['version'] = $version;
-
-          //$apidef['paths'] = new Array();
-          $.each( tabletop.sheets("paths").all(), function(i, path) {
-
-             $name = path['name'];
-             $verb = path['verb'];
-             $summary = path['summary'];
-             $description = path['description'];
-             $parameters = path['parameters'];
-             $operationId = path['operationId'];
-             $produces = path['produces'];
-             $consumes = path['consumes'];
-             $responses = path['responses'];
-
-             $d = new Array();
-             $d['summary'] = $summary;
-             $d['description'] = $description;
-             $d['parameters'] = $parameters;
-             $d['operationId'] = $operationId;
-             $d['produces'] = $produces;
-             $d['consumes'] = $consumes;
-             $d['responses'] = $responses;
-
-             $v = new Array();
-             $v[$verb] = $d;
-
-             $p = new Array();
-             $p[$name] = $v;
-
-             //$apidef['paths'].push($p);
-
-             })
-
           console.log($apidef);
           $spec_json = JSON.stringify($apidef);
           //$spec_json = JSON.stringify(JSON.parse($spec_json),null,2);
