@@ -48,17 +48,17 @@ title: Pull Spreadsheet
 
       $apidef = new Array();
 
-      $.each( tabletop.sheets("overview").all(), function(i, service) {
+      $.each( tabletop.sheets("overview").all(), function(i, api) {
 
-          $swagger = service['swagger'];
-          $info_title = service['info_title'];
-          $info_description = service['info_description'];
-          $info_termsOfService = service['info_termsOfService'];
-          $host = service['host'];
-          $basePath = service['basePath'];
-          $schemes = service['schemes'];
-          $produces = service['produces'];
-          $version = service['version'];
+          $swagger = api['swagger'];
+          $info_title = api['info_title'];
+          $info_description = api['info_description'];
+          $info_termsOfService = api['info_termsOfService'];
+          $host = api['host'];
+          $basePath = api['basePath'];
+          $schemes = api['schemes'];
+          $produces = api['produces'];
+          $version = api['version'];
 
           $apidef['swagger'] = $swagger;
 
@@ -74,6 +74,38 @@ title: Pull Spreadsheet
           $apidef['basePath'] = $basePath;
 
           $apidef['version'] = $version;
+
+          $apidef['paths'] = new Array();
+          $.each( tabletop.sheets("paths").all(), function(i, path) {
+
+             $name = path['name'];
+             $verb = path['verb'];
+             $summary = path['summary'];
+             $description = path['description'];
+             $parameters = path['parameters'];
+             $operationId = path['operationId'];
+             $produces = path['produces'];
+             $consumes = path['consumes'];
+             $responses = path['responses'];
+
+             $d = {};
+             $d['summary'] = $summary;
+             $d['description'] = $description;
+             $d['parameters'] = $parameters;
+             $d['operationId'] = $operationId;
+             $d['produces'] = $produces;
+             $d['consumes'] = $consumes;
+             $d['responses'] = $responses;
+
+             $v = {};
+             $v[$verb] = $d;
+
+             $p = {};
+             $p[$name] = $v;
+
+             $apidef['paths'].push($p);
+
+              })
 
           $spec_json = JSON.stringify($apidef);
           $spec_json = JSON.stringify(JSON.parse($spec_json),null,2);
