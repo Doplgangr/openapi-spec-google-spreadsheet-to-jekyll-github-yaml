@@ -106,7 +106,7 @@ title: Pull Spreadsheet
                 $parameter_default = response['default'];
 
                 console.log($parameter_path + " == " + $name);
-                if($parameter_path == $name)
+                if($parameter_path == $name && $parameters.includes($parameter_name))
                   {
                   $p = {};
                   $p['name'] = $parameter_name;
@@ -130,7 +130,7 @@ title: Pull Spreadsheet
                 $response_definition = response['definition'];
 
                 console.log($name + " == " + $response_path);
-                if($name == $response_path)
+                if($name == $response_path && $responses.includes($response_name))
                   {
                   $s = {};
                   $s['type'] = "array";
