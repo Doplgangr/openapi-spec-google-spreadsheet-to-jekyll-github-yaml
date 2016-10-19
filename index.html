@@ -196,8 +196,32 @@ title: Pull Spreadsheet
           $spec_json = JSON.stringify(JSON.parse($spec_json),null,2);
           document.getElementById('json_source').value = $spec_json;
 
+          // We will save the YAML, maybe JSOn another time.
           $spec_yaml = jsyaml.dump($apidef);
           document.getElementById('yaml_source').value = $spec_yaml;
+
+          // Grab the token from cookie
+          $oAuthToken = Cookies.get('token');
+
+          var github = new Github({token: $oAuthToken,auth: "oauth"});
+          var repo = github.getRepo($org,$repo);
+
+          repo.getTree('gh-pages?recursive=true', function(err, tree) {
+
+            $.each(tree, function(treeKey, treeValue) {
+
+              $writepath = '_data/openapi-spec.yaml';
+              $path = treeValue['path'];
+              $sha = treeValue['sha'];
+              //console.log($path + ' == ' + $writepath);
+              if($path==$writepath)
+                {
+                repo.writemanual('gh-pages',$writepath, $spec_yaml, 'Save', $sha, function(err) { });
+                //console.log("writing " + $writepath);
+                //alert("saved " + $writepath);
+                }
+              });
+            });
 
       })
 
