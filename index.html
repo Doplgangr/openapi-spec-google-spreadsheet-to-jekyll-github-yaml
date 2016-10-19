@@ -40,7 +40,7 @@ title: Pull Spreadsheet
     $(document).ready( function() {
       Tabletop.init( { key: key,
                        callback: showInfo,
-                       wanted: [ "overview","paths"],
+                       wanted: [ "overview","paths","definitions","properties"],
                        debug: true } )
     })
 
@@ -83,8 +83,6 @@ title: Pull Spreadsheet
              $description = path['description'];
              $parameters = path['parameters'];
              $operationId = path['operationId'];
-             $produces = path['produces'];
-             $consumes = path['consumes'];
              $responses = path['responses'];
 
              $d = {};
@@ -92,8 +90,6 @@ title: Pull Spreadsheet
              $d['description'] = $description;
              $d['parameters'] = $parameters;
              $d['operationId'] = $operationId;
-             $d['produces'] = $produces;
-             $d['consumes'] = $consumes;
              $d['responses'] = $responses;
 
              $v = {};
@@ -105,6 +101,41 @@ title: Pull Spreadsheet
              $apidef['paths'].push($p);
 
              })
+
+           $apidef['definitions'] = new Array();
+           $.each( tabletop.sheets("definitions").all(), function(i, path) {
+
+              $name = path['name'];
+              $type = path['type'];
+              $properties = path['properties'];
+
+              $d = {};
+              $d['name'] = $name;
+              $d['type'] = $type;
+              $d['properties'] = new Array();
+              $.each( tabletop.sheets("properties").all(), function(i, path) {
+
+                 $object = path['object'];
+                 $name = path['name'];
+                 $type = path['type'];
+                 $format = path['format'];
+                 $description = path['description'];
+
+                console.log($name + " == " + $object);
+                 if($name == $object)
+                   {
+                   $p = {};
+                   $p['name'] = $name;
+                   $p['type'] = $type;
+                   $p['format'] = $format;
+                   $p['description'] = $description;
+                   $d['properties'].push($p);
+                   }
+                 })
+
+              $apidef['definitions'].push($d);
+
+              })
 
           $spec_json = JSON.stringify($apidef);
           $spec_json = JSON.stringify(JSON.parse($spec_json),null,2);
