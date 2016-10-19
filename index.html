@@ -87,7 +87,7 @@ title: Pull Spreadsheet
              $consumes = path['consumes'];
              $responses = path['responses'];
 
-             $d = {};
+             $d = new Array();
              $d['summary'] = $summary;
              $d['description'] = $description;
              $d['parameters'] = $parameters;
@@ -96,10 +96,10 @@ title: Pull Spreadsheet
              $d['consumes'] = $consumes;
              $d['responses'] = $responses;
 
-             $v = {};
+             $v = new Array();
              $v[$verb] = $d;
 
-             $p = {};
+             $p = new Array();
              $p[$name] = $v;
 
              //$apidef['paths'].push($p);
