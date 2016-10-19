@@ -46,19 +46,75 @@ title: Pull Spreadsheet
 
     function showInfo(data, tabletop) {
 
+      $apidef = {};
 
       $.each( tabletop.sheets("overview").all(), function(i, api) {
 
-          $apidef = {};
+          $swagger = api['swagger'];
+          $info_title = api['info_title'];
+          $info_description = api['info_description'];
+          $info_termsOfService = api['info_termsOfService'];
+          $host = api['host'];
+          $basePath = api['basePath'];
+          $schemes = api['schemes'];
+          $produces = api['produces'];
+          $version = api['version'];
 
-          $apidef["swagger"] = "20";
+          $apidef['swagger'] = '2.0';
+
+          $apidef['info'] = {};
+
+          $i = [];
+          $i['title'] = $info_title;
+          $i['description'] = $info_description;
+          $i['termsOfService'] = $info_termsOfService;
+          $i['version'] = $version;
+
+          $apidef['info'] = $i;
+
+          $apidef['host'] = $host;
+          $apidef['basePath'] = $basePath;
+          $apidef['version'] = $version;
+
+          $apidef['paths'] = {};
+          $.each( tabletop.sheets("paths").all(), function(i, path) {
+
+             $name = path['name'];
+             $verb = path['verb'];
+             $summary = path['summary'];
+             $description = path['description'];
+             $parameters = path['parameters'];
+             $operationId = path['operationId'];
+             $produces = path['produces'];
+             $consumes = path['consumes'];
+             $responses = path['responses'];
+
+             $d = new Array();
+             $d['summary'] = $summary;
+             $d['description'] = $description;
+             $d['parameters'] = $parameters;
+             $d['operationId'] = $operationId;
+             $d['produces'] = $produces;
+             $d['consumes'] = $consumes;
+             $d['responses'] = $responses;
+
+             $v = new Array();
+             $v[$verb] = $d;
+
+             $p = new Array();
+             $p[$name] = $v;
+
+             $apidef['paths'].push($p);
+
+             })
 
           console.log($apidef);
           $spec_json = JSON.stringify($apidef);
-          console.log($spec_json);
+          //$spec_json = JSON.stringify(JSON.parse($spec_json),null,2);
+          console.log("2: " + $spec_json);
           $spec_yaml = jsyaml.dump($apidef);
-          console.log($spec_yaml);
-          document.getElementById('source').value = $spec_yaml;
+
+          document.getElementById('source').value = $spec_json;
 
       })
 
